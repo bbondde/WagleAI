@@ -1,0 +1,40 @@
+{
+    "model" : {
+        "min_input_size":       416,
+        "max_input_size":       512,
+        "anchors":              [4,21, 6,33, 10,48, 14,68, 20,99, 29,132, 38,191, 56,242, 87,324],
+        "labels":               ["person"]
+    },
+
+    "train": {
+        "train_image_folder":   "/home/pusheen/Desktop/Human_Detection/keras-yolov3-master/data/train/image/",
+        "train_annot_folder":   "/home/pusheen/Desktop/Human_Detection/keras-yolov3-master/data/train/annot/",
+        "cache_name":           "human_train.pkl",
+
+        "train_times":          1,
+        "batch_size":           4,
+        "learning_rate":        1e-4,
+        "nb_epochs":            100,
+        "warmup_epochs":        3,
+        "ignore_thresh":        0.5,
+        "gpus":                 "1",
+
+        "grid_scales":          [1,1,1],
+        "obj_scale":            5,
+        "noobj_scale":          1,
+        "xywh_scale":           1,
+        "class_scale":          1,
+
+        "tensorboard_dir":      "log_human",
+        "saved_weights_name":   "human.h5",
+        "debug":                true
+    },
+
+    "valid": {
+        "valid_image_folder":   "/home/pusheen/Desktop/Human_Detection/keras-yolov3-master/data/valid/image/",
+        "valid_annot_folder":   "/home/pusheen/Desktop/Human_Detection/keras-yolov3-master/data/valid/annot/",
+        "cache_name":           "human_valid.pkl",
+
+        "valid_times":          1
+    }
+}
