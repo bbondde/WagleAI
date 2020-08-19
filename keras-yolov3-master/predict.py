@@ -9,12 +9,27 @@ from utils.bbox import draw_boxes
 from keras.models import load_model
 from tqdm import tqdm
 import numpy as np
+import pickle
+
+def get_boxes(boxes, labels, thresh):
+	v_boxes, v_labels, v_scores = list(), list(), list()
+	# enumerate all boxes
+	for box in boxes:
+		# enumerate all possible labels
+		for i in range(len(labels)):
+			# check if the threshold for this label is high enough
+			if box.classes[i] > thresh:
+				v_boxes.append(box)
+				v_labels.append(labels[i])
+				v_scores.append(box.classes[i]*100)
+				# don't break, many labels may trigger for one box
+	return v_boxes, v_labels, v_scores
 
 def _main_(args):
     config_path  = args.conf
     input_path   = args.input
     output_path  = args.output
-
+    i_numb = len(input_path)
     with open(config_path) as config_buffer:    
         config = json.load(config_buffer)
 
@@ -112,13 +127,28 @@ def _main_(args):
         for image_path in image_paths:
             image = cv2.imread(image_path)
             print(image_path)
-
+            
             # predict the bounding boxes
             boxes = get_yolo_boxes(infer_model, [image], net_h, net_w, config['model']['anchors'], obj_thresh, nms_thresh)[0]
-
+            v_boxes, v_labels, v_scores = get_boxes(boxes,config['model']['labels'], obj_thresh)
+            # summarize what we found
+            for i in range(len(v_boxes)):
+                print(v_labels[i], v_scores[i])    
+                box = v_boxes[i]
+                # get coordinates
+                y1, x1, y2, x2 = box.ymin, box.xmin, box.ymax, box.xmax
+                # calculate width and height of the box
+                width, height = x2 - x1, y2 - y1
+                print([y1, x1, y2, x2])
+            #np.save(["/ouput/",image_path[39:53],".npy"], boxes)
+            with open('results_'+(image_path[i_numb:i_numb+13])+'.p','wb') as fp:
+            #with open('results.txt') as fp:
+              pickle.dump(v_boxes,fp)           
+              pickle.dump(v_labels,fp)
+              pickle.dump(v_scores,fp)
+            
             # draw bounding boxes on the image using labels
-            draw_boxes(image, boxes, config['model']['labels'], obj_thresh) 
-     
+            draw_boxes(image, boxes, config['model']['labels'], obj_thresh)      
             # write the image with bounding boxes to file
             cv2.imwrite(output_path + image_path.split('/')[-1], np.uint8(image))         
 
