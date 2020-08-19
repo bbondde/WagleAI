@@ -2,25 +2,22 @@
 """
 Created on Tue Aug 18 11:23:03 2020
 
-@author: imaging_jpc
+@author: bbondde@gmail.com
 """
 import numpy as np
 import argparse
 import pickle
 from scipy.spatial import distance
 
-def _main_(args):
-    
-    input_file   = args.input
-    #output_path  = args.output        
-#def pop_density_file(input_file):
+def _main_(args):    
+    input_file   = args.input         
+
     
     with open(input_file,'rb') as file:
     #with open('C:/Users/imaging_jpc/keras-yolo3/output_results/content/keras-yolo3/output_results/results_MP_SEL_B015461.p','rb') as file:    
       v_boxes = pickle.load(file)  
       v_labels = pickle.load(file) 
-      v_scores = pickle.load(file) 
-      # print(v_boxes[1].ymin, v_boxes[1].xmin, v_boxes[1].ymax, v_boxes[1].xmax)
+      v_scores = pickle.load(file)       
       # print(v_labels)
       # print(v_scores)
       matrix_xy = [0,0,0,0,0,0,0,0,0,0]
@@ -63,10 +60,8 @@ def _main_(args):
                           violate_pair = violate_pair+1  
                           
           print("social distance violate =", violate_pair,"/total person pair=", all_pair) 
-          print("total number of person =", h_n)              
+          print("total number of person =", h_n) 
           
-          
-          # 그림파일이 하나인지 여러개를 평균낼걸지 결정해야 한다. 그냥 실시간이 나을듯.
           return matrix_xy
       
 if __name__ == '__main__':
