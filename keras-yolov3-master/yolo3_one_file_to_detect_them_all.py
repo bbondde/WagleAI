@@ -378,7 +378,23 @@ def draw_boxes(image, boxes, labels, obj_thresh):
                         1e-3 * image.shape[0], 
                         (0,255,0), 2)
         
-    return image      
+    return image    
+
+def count_boxes(image, boxes, labels, person, obj_thresh):
+    for box in boxes:
+        label_str = ''
+        label = -1
+        person = 0
+
+        for i in range(len(labels)):
+            if box.classes[i] > obj_thresh:
+                label_str += labels[i]
+                label = i
+                print(labels[i] + ': ' + str(box.classes[i]*100) + '%')
+
+        if label >= 0:
+            person += 1
+            print(person)
 
 def _main_(args):
     weights_path = args.weights
@@ -427,6 +443,10 @@ def _main_(args):
 
     # draw bounding boxes on the image using labels
     draw_boxes(image, boxes, labels, obj_thresh) 
+    
+    # count bounding boxes
+    person=0
+    count_boxes(image, boxes, labels, person, obj_thresh)
  
     # write the image with bounding boxes to file
     cv2.imwrite(image_path[:-4] + '_detected' + image_path[-4:], (image).astype('uint8')) 
