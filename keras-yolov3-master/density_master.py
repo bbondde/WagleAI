@@ -22,37 +22,38 @@ def density_estimator(person_num, boxes):
         matrix_xy = np.vstack([matrix_xy, mat_xy])
 
     matrix_xy = np.delete(matrix_xy, 0, 0)
-    violate_pair = 0
     density_sum = 0
-    all_pair = 0
 
     for i in range(person_num-1):
+        all_pair = 0
+        violate_pair = 0
+
         for j in range(i + 1, person_num):
             center_box_i = matrix_xy[i, 4:6]
             center_box_j = matrix_xy[j, 4:6]
 
             dst = distance.euclidean(center_box_i, center_box_j)
 
-            min_distance = max(matrix_xy[i][8], matrix_xy[j][8])
-            if min_distance == max(min_distance, dst):
-                violate_pair += 1
+            #min_distance = max(matrix_xy[i][8], matrix_xy[j][8])
+            #if min_distance == max(min_distance, dst):
+            #    violate_pair += 1
 
-            all_pair = all_pair+1
-
-            if matrix_xy[i][7] >= matrix_xy[j][7]:
-                if dst < matrix_xy[i][7]:
+            if matrix_xy[i][8] >= matrix_xy[j][8]:
+                if dst < matrix_xy[i][8]:
                     violate_pair += 1
             else:
-                if dst < matrix_xy[j][7]:
+                if dst < matrix_xy[j][8]:
                     violate_pair += 1
 
-            density_rate = violate_pair / all_pair
-            density_sum += density_rate
+            all_pair += 1
 
-            #density_rate = violate_pair / (person_num-i-1)
-            #density_sum += density_rate
+        density_rate = violate_pair / all_pair
+        density_sum += density_rate
+
+        print(all_pair, violate_pair, density_rate, density_sum)
 
     average_density = density_sum / person_num
+    print(average_density)
     return average_density
 
 
