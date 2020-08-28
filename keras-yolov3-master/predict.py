@@ -6,7 +6,7 @@ import json
 import cv2
 from utils.utils import get_yolo_boxes, makedirs
 from utils.multi_gpu_model import check_gpus
-from utils.bbox import draw_boxes
+from utils.bbox import draw_boxes, count_person
 from keras.models import load_model
 from tqdm import tqdm
 import numpy as np
@@ -63,8 +63,10 @@ def _main_(args):
                     draw_boxes(images[i], batch_boxes[i],
                                config['model']['labels'], obj_thresh)
 
-                    person = len(batch_boxes[i])
-                    average_density = density_estimator(person, batch_boxes[i])
+                    person, use_boxes = count_person(batch_boxes[i],
+                                                     config['model']['labels'],
+                                                     obj_thresh)
+                    average_density = density_estimator(person, use_boxes)
                     show_density(image[i], average_density)
 
                     cv2.imshow('video with bboxes', images[i])
@@ -108,8 +110,11 @@ def _main_(args):
                         draw_boxes(images[j], batch_boxes[j],
                                    config['model']['labels'], obj_thresh)
 
-                        person = len(batch_boxes[j])
-                        average_density = density_estimator(person, batch_boxes[j])
+                        person, use_boxes = count_person(batch_boxes[i],
+                                                         config['model'][
+                                                             'labels'],
+                                                         obj_thresh)
+                        average_density = density_estimator(person, use_boxes)
                         show_density(images[j], average_density)
 
                         # show the video with detection bounding boxes          
@@ -153,8 +158,10 @@ def _main_(args):
             draw_boxes(image, boxes, config['model']['labels'], obj_thresh)
 
             # print the number of predicted boxes
-            person = len(boxes)
-            average_density = density_estimator(person, boxes)
+            person, use_boxes = count_person(boxes,
+                                             config['model']['labels'],
+                                             obj_thresh)
+            average_density = density_estimator(person, use_boxes)
             show_density(image, average_density)
      
             # write the image with bounding boxes to file
