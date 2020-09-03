@@ -30,11 +30,11 @@ python wagle.py --mode predict -c json파일의_경로 -i 이미지/동영상_�
 
 ## Training
 ### 1. 데이터 준비
-본 모델을 학습하기 위해 다음과 같은 데이터셋을 사용하였습니다.
-	인도보행영상 : <a>http://www.aihub.or.kr/aidata/136</a>
-	Multiple Object Tracking Benchmark : <a>https://motchallenge.net</a>
+본 모델을 학습하기 위해 다음과 같은 데이터셋을 사용하였습니다.  
+	인도보행영상 : http://www.aihub.or.kr/aidata/136  
+	Multiple Object Tracking Benchmark : https://motchallenge.net  
 파일 구조는 다음과 같이 설정해주세요
-```
+
 .
 +-- data
 |   +-- MOT
@@ -47,7 +47,7 @@ python wagle.py --mode predict -c json파일의_경로 -i 이미지/동영상_�
 |   +-- Pedestrian
 |   |   +-- Bbox_#
 |   |   +-- Bbox_#
-```
+
 MOT데이터를 활용해 train/valid 폴더를 분리할 경우 다음 명령어를 입력해주세요.
 ```bash
 python wagle.py --mode dataset -p ./data/MOT -m True -t data/train -v data/valid
