@@ -31,12 +31,12 @@ python wagle.py --mode predict -c json파일의_경로 -i 이미지/동영상_�
 ## Training
 ### 1. 데이터 준비
 본 모델을 학습하기 위해 다음과 같은 데이터셋을 사용하였습니다.  
-```bash
+```
 인도보행영상 : http://www.aihub.or.kr/aidata/136  
 Multiple Object Tracking Benchmark : https://motchallenge.net  
 ```
 파일 구조는 다음과 같이 설정해주세요
-```bash
+```
 .
 +-- data
 |   +-- MOT
