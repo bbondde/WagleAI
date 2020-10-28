@@ -14,7 +14,7 @@ conda create --name yolo3 python=3.7
 동작을 위해 cuda 10.0, cudnn 7.6.5, tensorflow(-gpu) 1.15.0 버전은 반드시 맞춰주세요.  
 패키지들의 설치를 위해 다음 명령어를 실행해 주세요.
 ```bash
-pip install -r requiremnets.txt
+pip install -r requirements.txt
 ```
 
 ## Detection
